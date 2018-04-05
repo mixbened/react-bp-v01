@@ -3,21 +3,21 @@
 
 Including
 
-* Routing Setup
+# Routing Setup
 - import of React-Router-Dom
 - create route File and export/import it to App
 - Routing Home Component in App
 - components Folder
 - render Home Component (stateful)
 
-* Server Setup
+# Server Setup
 - server Foler with server.js and controller
 - import express, bodyParser
 - creat controller and import
 - edit package.json for main and proxy
 - let server listen 
 
-* Database Connection
+# Database Connection
 - include packages (env, massive)
 - create variable with Database Connection
 - create 'db' Folder with database calls
