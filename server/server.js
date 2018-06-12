@@ -19,9 +19,10 @@ app.use(session({
     resave: false,
   }));
 
-app.get('/api/users', controller.getData)
-
-
-
+app.get('/api/users/', controller.getData)
+app.post('/api/users/login/', controller.login)
+app.post('/api/users/register/', controller.register)
+app.get('/api/users/session/', controller.session)
+app.get('/api/users/logout/', controller.logout)
 
 app.listen(PORT, () => console.log(`Server is rocking on PORT ${PORT}`))

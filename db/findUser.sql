@@ -1,0 +1,1 @@
+SELECT * FROM d_users WHERE username = $1;

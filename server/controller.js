@@ -9,6 +9,7 @@ module.exports = {
     },
     register: (req, res) => {
         // check for duplicates
+        const { password, username } = req.body;
         req.app.get('db').findUser(username).then(response => {
             console.log(response)
             if(response[0]){
@@ -17,9 +18,10 @@ module.exports = {
                 // password hashing
                 bcrypt.hash(password, saltRounds).then(hashedPassword => {
                     // user registration - incl hashed Password
-                    req.app.get('db').registerUser(userData).then(response => {
+                    req.app.get('db').addUser([username ,hashedPassword]).then(response => {
                         // put necessary Information in the User Session
-                        req.session.user = {session.object}
+                        console.log(response)
+                        req.session.user = response.data
                         res.status(200).send('Registration Successfull')
                     }).catch(err => console.log('Error in Registration:', err ));
                 });
@@ -27,12 +29,14 @@ module.exports = {
         }).catch(err => console.log('Error in finding User:', err))
     },
     login: (req, res) => {
+        const { password, username } = req.body;
+        console.log(username)
         req.app.get('db').findUser(username).then(response => {
-            // console.log(response)
-            if(response.data){
-                bcrypt.compare(password, data[0].password).then(passwordsMatch => {
+            console.log(response)
+            if(response[0]){
+                bcrypt.compare(password, response[0].password).then(passwordsMatch => {
                     if(passwordsMatch) {
-                        req.session.user = { session.object }
+                        req.session.user = {user: username}
                         // console.log('-----req.session.user',req.session.user)
                         res.status(200).send( req.session.user )
                     } else {
@@ -43,5 +47,13 @@ module.exports = {
                 res.status(200).send( 'User does not exist.' )
             }
         }).catch(err => console.log( 'Error in finding User:', err ))
+    },
+    logout: (req, res) => {
+        req.session.destroy(err => {
+            res.status(200).send(`Session destruction or fail with: ${err}`)
+        })
+    },
+    session: (req, res) => {
+        res.status(200).json(req.session.user)
     }
 }
